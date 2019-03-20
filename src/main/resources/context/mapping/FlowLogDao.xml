@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xifeng.util.dao.FlowLogDao">
+    <resultMap id="FullResultMap" type="flowLog">
+        <result property="id" column="id" />
+        <result property="serialNo" column="serial_no" />
+        <result property="funcFlag" column="func_flag" />
+        <result property="userId" column="user_id" />
+        <result property="outDeposite" column="out_deposite" />
+        <result property="outName" column="out_name" />
+        <result property="outMerchantId" column="out_merchant_id" />
+        <result property="outMerchantCode" column="out_merchant_code" />
+        <result property="inDeposite" column="in_deposite" />
+        <result property="inMerchantCode" column="in_merchant_code" />
+        <result property="inMerchantId" column="in_merchant_id" />
+        <result property="inName" column="in_name" />
+        <result property="tradeAmount" column="trade_amount" />
+        <result property="tradeHandFee" column="trade_hand_fee" />
+        <result property="tradeDate" column="trade_date" />
+        <result property="tradeTime" column="trade_time" />
+        <result property="bankFrontSerial" column="bank_front_serial" />
+        <result property="flowId" column="flow_id" />
+        <result property="remark" column="remark" />
+        <result property="createTime" column="create_time" />
+    </resultMap>
+    <insert id="saveFlowLog" parameterType="flowLog" >
+    INSERT INTO fd_flow_log(id,
+    serial_no,func_flag,user_id,out_deposite,out_name,
+    out_merchant_id,out_merchant_code,in_deposite,in_merchant_code,in_merchant_id,
+    in_name,trade_amount,trade_hand_fee,trade_date,trade_time,
+    bank_front_serial,flow_id,remark,create_time)
+     VALUES (#{id},
+    #{serialNo},#{funcFlag},#{userId},#{outDeposite},#{outName},
+    #{outMerchantId},#{outMerchantCode},#{inDeposite},#{inMerchantCode},#{inMerchantId},
+    #{inName},#{tradeAmount},#{tradeHandFee},#{tradeDate},#{tradeTime},
+    #{bankFrontSerial},#{flowId},#{remark},#{createTime})
+    </insert>
+    <update id="updateFlowLogById" parameterType="flowLog" >
+    update fd_flow_log set update_time=#{updateTime}
+    <if test="id !=null ">,id=#{id}</if>
+    <if test="serialNo !=null and serialNo !=''">,serial_no=#{serialNo}</if>
+    <if test="funcFlag !=null and funcFlag !=''">,func_flag=#{funcFlag}</if>
+    <if test="userId !=null and userId !=''">,user_id=#{userId}</if>
+    <if test="outDeposite !=null and outDeposite !=''">,out_deposite=#{outDeposite}</if>
+    <if test="outName !=null and outName !=''">,out_name=#{outName}</if>
+    <if test="outMerchantId !=null and outMerchantId !=''">,out_merchant_id=#{outMerchantId}</if>
+    <if test="outMerchantCode !=null and outMerchantCode !=''">,out_merchant_code=#{outMerchantCode}</if>
+    <if test="inDeposite !=null and inDeposite !=''">,in_deposite=#{inDeposite}</if>
+    <if test="inMerchantCode !=null and inMerchantCode !=''">,in_merchant_code=#{inMerchantCode}</if>
+    <if test="inMerchantId !=null and inMerchantId !=''">,in_merchant_id=#{inMerchantId}</if>
+    <if test="inName !=null and inName !=''">,in_name=#{inName}</if>
+    <if test="tradeAmount !=null ">,trade_amount=#{tradeAmount}</if>
+    <if test="tradeHandFee !=null ">,trade_hand_fee=#{tradeHandFee}</if>
+    <if test="tradeDate !=null and tradeDate !=''">,trade_date=#{tradeDate}</if>
+    <if test="tradeTime !=null and tradeTime !=''">,trade_time=#{tradeTime}</if>
+    <if test="bankFrontSerial !=null and bankFrontSerial !=''">,bank_front_serial=#{bankFrontSerial}</if>
+    <if test="flowId !=null and flowId !=''">,flow_id=#{flowId}</if>
+    <if test="remark !=null and remark !=''">,remark=#{remark}</if>
+    <if test="createTime !=null ">,create_time=#{createTime}</if>
+     where id=#{id}
+    </update>
+    <delete id="deleteFlowLogById">
+    delete from fd_flow_log where id=#{id}
+    </delete>
+    <select id="queryFlowLogByParams" resultMap="FullResultMap" parameterType="map" >
+    select id,
+    serial_no,func_flag,user_id,out_deposite,out_name,
+    out_merchant_id,out_merchant_code,in_deposite,in_merchant_code,in_merchant_id,
+    in_name,trade_amount,trade_hand_fee,trade_date,trade_time,
+    bank_front_serial,flow_id,remark,create_time from fd_flow_log where 1=1
+    <if test="id !=null and id !=''"> and id=#{id}</if>
+    <if test="serialNo !=null and serialNo !=''"> and serial_no=#{serialNo}</if>
+    <if test="funcFlag !=null and funcFlag !=''"> and func_flag=#{funcFlag}</if>
+    <if test="userId !=null and userId !=''"> and user_id=#{userId}</if>
+    <if test="outDeposite !=null and outDeposite !=''"> and out_deposite=#{outDeposite}</if>
+    <if test="outName !=null and outName !=''"> and out_name=#{outName}</if>
+    <if test="outMerchantId !=null and outMerchantId !=''"> and out_merchant_id=#{outMerchantId}</if>
+    <if test="outMerchantCode !=null and outMerchantCode !=''"> and out_merchant_code=#{outMerchantCode}</if>
+    <if test="inDeposite !=null and inDeposite !=''"> and in_deposite=#{inDeposite}</if>
+    <if test="inMerchantCode !=null and inMerchantCode !=''"> and in_merchant_code=#{inMerchantCode}</if>
+    <if test="inMerchantId !=null and inMerchantId !=''"> and in_merchant_id=#{inMerchantId}</if>
+    <if test="inName !=null and inName !=''"> and in_name=#{inName}</if>
+    <if test="tradeAmount !=null and tradeAmount !=''"> and trade_amount=#{tradeAmount}</if>
+    <if test="tradeHandFee !=null and tradeHandFee !=''"> and trade_hand_fee=#{tradeHandFee}</if>
+    <if test="tradeDate !=null and tradeDate !=''"> and trade_date=#{tradeDate}</if>
+    <if test="tradeTime !=null and tradeTime !=''"> and trade_time=#{tradeTime}</if>
+    <if test="bankFrontSerial !=null and bankFrontSerial !=''"> and bank_front_serial=#{bankFrontSerial}</if>
+    <if test="flowId !=null and flowId !=''"> and flow_id=#{flowId}</if>
+    <if test="remark !=null and remark !=''"> and remark=#{remark}</if>
+    <if test="createTime !=null and createTime !=''"> and create_time=#{createTime}</if>
+    </select>
+</mapper>
