@@ -21,6 +21,7 @@ import java.util.List;
  */
 public class Table {
 	String tableName;
+	String tableComment;
 	List<TableColumn> columnList;
 	
 	public Table() {
@@ -29,6 +30,11 @@ public class Table {
 	
 	public Table(String tableName,List<TableColumn> columnList) {
 		this.tableName = tableName;
+		this.columnList = columnList;
+	}
+	public Table(String tableName,String tableComment,List<TableColumn> columnList) {
+		this.tableName = tableName;
+		this.tableComment = tableComment;
 		this.columnList = columnList;
 	}
 	public String getTableName() {
@@ -42,6 +48,14 @@ public class Table {
 	}
 	public void setColumnList(List<TableColumn> columnList) {
 		this.columnList = columnList;
+	}
+
+	public String getTableComment() {
+		return tableComment;
+	}
+
+	public void setTableComment(String tableComment) {
+		this.tableComment = tableComment;
 	}
 	
 }

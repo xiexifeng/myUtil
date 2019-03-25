@@ -18,9 +18,12 @@ import java.sql.Connection;
 import java.util.List;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.HSSFColor;
 
 import com.xifeng.util.db.MysqlConnection;
 import com.xifeng.util.db.Table;
@@ -42,29 +45,67 @@ public class ExcelUtil {
 		// 声明一个工作薄
 		HSSFWorkbook workbook = new HSSFWorkbook();
 		HSSFSheet sheet = workbook.createSheet("sheet1");
+		
+		HSSFCellStyle style = workbook.createCellStyle();
+		// 背景色
+		style.setFillForegroundColor(HSSFColor.YELLOW.index);
+		style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND); 
+		style.setFillBackgroundColor(HSSFColor.YELLOW.index); 
+		
+		HSSFFont font = workbook.createFont();
+		font.setFontHeightInPoints((short) 10);
+//		font.setColor(HSSFColor.RED.index);
+		font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+		font.setFontName("宋体");
+		style.setFont(font);
+		// 设置边框
+		style.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+		style.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+		style.setBorderRight(HSSFCellStyle.BORDER_THIN);
+		style.setBorderTop(HSSFCellStyle.BORDER_THIN);  
+		
 		int rowNum = 0;
 		for (Table table : tableList) {
 			List<TableColumn> columnList = table.getColumnList();
 			HSSFRow rowHead = sheet.createRow(rowNum);
 			HSSFCell cell = rowHead.createCell(0);
 			cell.setCellValue("表名称");
+			cell.setCellStyle(style);
+			sheet.setColumnWidth(0, 10*256);
 			cell = rowHead.createCell(1);
 			cell.setCellValue(table.getTableName());
+			cell.setCellStyle(style);
+			sheet.setColumnWidth(1, 30*256);
+			cell = rowHead.createCell(2);
+			cell.setCellValue(table.getTableComment());
+			cell.setCellStyle(style);
+			sheet.setColumnWidth(2, 20*256);
 			rowNum++;
 
 			HSSFRow rowHead1 = sheet.createRow(rowNum);
 			cell = rowHead1.createCell(0);
 			cell.setCellValue("序号");
+			cell.setCellStyle(style);
+			
 			cell = rowHead1.createCell(1);
 			cell.setCellValue("字段名称");
+			cell.setCellStyle(style);
 			cell = rowHead1.createCell(2);
 			cell.setCellValue("数据类型");
+			sheet.setColumnWidth(2, 20*256);
+			cell.setCellStyle(style);
 			cell = rowHead1.createCell(3);
 			cell.setCellValue("字段描述");
+			sheet.setColumnWidth(3, 40*256);
+			cell.setCellStyle(style);
 			cell = rowHead1.createCell(4);
 			cell.setCellValue("是否为空");
+			cell.setCellStyle(style);
+			sheet.setColumnWidth(4, 10*256);
 			cell = rowHead1.createCell(5);
 			cell.setCellValue("默认值");
+			cell.setCellStyle(style);
+			sheet.setColumnWidth(5, 30*256);
 			rowNum++;
 			int i = 1;
 			for (TableColumn tableColumn : columnList) {
@@ -104,11 +145,11 @@ public class ExcelUtil {
 
 	public static void main(String[] args) {
 
-		String user = "xiezb_dev", pwd = "ab683312", ip = "10.50.10.201", dbName = "jcpt_data_fix";
+		String user = "king_rw", pwd = "TJkGjWs4KHWYNdAY", ip = "192.168.1.24", dbName = "sinaif_third";
 		Connection conn = MysqlConnection.getConnection(user, pwd, ip, dbName);
 		List<Table> tableList = TableDefine.getTableCols(conn, dbName, null);
 		try {
-			OutputStream out = new FileOutputStream(new File("C:/Users/xiezbmf/Desktop/jcpt_data_fix.xls"));
+			OutputStream out = new FileOutputStream(new File("C:/mine/init/"+dbName+".xlsx"));
 			new ExcelUtil().exportDataBase(out, tableList);
 		} catch (FileNotFoundException e) {
 			
