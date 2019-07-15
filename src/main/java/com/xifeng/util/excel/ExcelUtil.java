@@ -145,17 +145,17 @@ public class ExcelUtil {
 
 	public static void main(String[] args) {
 
-		String user = "king_rw", pwd = "TJkGjWs4KHWYNdAY", ip = "192.168.1.24", dbName = "sinaif_third";
+		String user = "sinaif_weibo_rw", pwd = "TJkGjWs4KHWYNdAY", ip = "192.168.1.181", dbName = "sinaif_king";
 		Connection conn = MysqlConnection.getConnection(user, pwd, ip, dbName);
 		List<Table> tableList = TableDefine.getTableCols(conn, dbName, null);
-		try {
-			OutputStream out = new FileOutputStream(new File("C:/mine/init/"+dbName+".xlsx"));
-			new ExcelUtil().exportDataBase(out, tableList);
-		} catch (FileNotFoundException e) {
-			
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				
-		}
+//		try {
+//			OutputStream out = new FileOutputStream(new File("C:/mine/init/"+dbName+".xlsx"));
+//			new ExcelUtil().exportDataBase(out, tableList);
+//		} catch (FileNotFoundException e) {
+//			
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//				
+//		}
 	}
 }
