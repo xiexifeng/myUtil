@@ -13,8 +13,6 @@ import org.springframework.util.Assert;
 
 /**
  * @Description : 
- * @Copyright : Sinaif Software Co.,Ltd. All Rights Reserved
- * @Company : 海南新浪爱问普惠科技有限公司
  * @author : schelling
  * @version : 1.0
  * @Date : 2019年7月15日 下午8:08:32
