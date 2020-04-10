@@ -38,7 +38,7 @@ public class PojoGenTest {
 //		
 //		MybatisMapper mapper = new MybatisMapper(pojoGen,namespace,tableName,mappingPath);
 //		mapper.genMybatisMapper(tableList.get(0));
-		
+		System.out.println("hellow");
 		String tableName = "fd_flow_log";
 		int i = tableName.indexOf("_");
 		if(i>0) {
