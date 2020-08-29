@@ -11,7 +11,7 @@
 
 		<commons-lang3.version>3.3.2</commons-lang3.version>
 		<commons-fileupload.version>[1.3.3,)</commons-fileupload.version>
-		<commons-beanutils.version>1.9.3</commons-beanutils.version>
+		<commons-beanutils.version>1.9.4</commons-beanutils.version>
 		<commons-dbcp.version>1.4</commons-dbcp.version>
 		<commons-pool.version>1.6</commons-pool.version>
 		<commons-collections.version>4.1</commons-collections.version>
