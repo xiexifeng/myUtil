@@ -233,6 +233,14 @@ public class StringUtil extends StringUtils {
 		}
 		return sb.toString();
 	}
+
+	public static String changeToPath(String pack) {
+		if(pack != null) {
+			return pack.replace(".", "\\");
+		}
+		return null;
+	}
+
 	
 }
 
