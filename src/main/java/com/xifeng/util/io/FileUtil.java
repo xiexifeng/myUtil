@@ -10,6 +10,7 @@
 package com.xifeng.util.io;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -39,6 +40,38 @@ public class FileUtil {
 			if(fos!=null) {
 				try {
 					fos.close();
+				} catch (IOException e) {
+						
+				}
+			}
+		}
+	}
+	
+	public static void copyFile(File file,String path) {
+		FileInputStream fis = null;
+		FileOutputStream fos = null;
+		try {
+			fis = new FileInputStream(file);
+			fos = new FileOutputStream(new File(path));
+			byte[] b = new byte[4096];
+			
+			for(int len = 0;(len = fis.read(b)) != -1;) {
+				fos.write(b,0,len);
+			}
+			fos.flush();
+		} catch (Exception e) {
+				e.printStackTrace();
+		} finally {
+			if(fos!=null) {
+				try {
+					fos.close();
+				} catch (IOException e) {
+						
+				}
+			}
+			if(fis!=null) {
+				try {
+					fis.close();
 				} catch (IOException e) {
 						
 				}

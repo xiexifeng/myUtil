@@ -13,6 +13,7 @@ import java.util.concurrent.TimeUnit;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 
+import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -206,5 +207,39 @@ public class HttpUtil {
 				throw new IOException("Unexpected code " + response);
 			return response.body().string();
 		}
+	}
+	
+	public static void main(String[] args) {
+		OkHttpClient okHttpClient = new OkHttpClient.Builder().build();
+        FormBody formBody = new FormBody.Builder()
+                .add("post_id", "1953")
+                .add("form_id", "3dfaf07")
+                .add("queried_id", "1953")
+                .add("form_fields[CompanyName]", "海运易电商003")
+                .add("form_fields[email]", "航运业")
+                .add("form_fields[message]", "香港")
+                .add("form_fields[field_c557d16]", "+8625252222")
+                .add("form_fields[field_befa199]", "schelling.xie@marineonline.com")
+                .add("form_fields[field_f331f48]", "peter")
+                .add("form_fields[field_16bef8d]", "remark 20201222")
+                .add("action", "elementor_pro_forms_send_form")
+                .add("referrer", "https://shipping-news.marineonline.com/index.php/authorized-service-provider-aspmobile/")
+                .build();
+
+        Request request = new Request.Builder()
+                .url("https://shipping-news.marineonline.com/wp-admin/admin-ajax.php")
+                .post(formBody)
+                .build();
+
+        Response response;
+		try {
+			response = okHttpClient.newCall(request).execute();
+			System.out.println(response.toString());
+			System.out.println(response.body().string());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
 	}
 }
