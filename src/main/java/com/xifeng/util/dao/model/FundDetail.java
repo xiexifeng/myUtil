@@ -1,8 +1,8 @@
-package com.xifeng.util.craw;
+package com.xifeng.util.dao.model;
 
-import java.util.List;
-
-public class FundInfo {
+public class FundDetail {
+	
+	Long id;
 	
 	/**
 	 * 基金编号
@@ -90,11 +90,14 @@ public class FundInfo {
 	 * 持仓数据截止时间
 	 */
 	String stockLastTime;
-	
-	
-	List<FundStockVo> stockList;
-	
-	
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 	public String getFundNo() {
 		return fundNo;
@@ -176,6 +179,14 @@ public class FundInfo {
 		this.cumulativeNetValue = cumulativeNetValue;
 	}
 
+	public String getLastDayIncrease() {
+		return lastDayIncrease;
+	}
+
+	public void setLastDayIncrease(String lastDayIncrease) {
+		this.lastDayIncrease = lastDayIncrease;
+	}
+
 	public String getLastMonthIncrease() {
 		return lastMonthIncrease;
 	}
@@ -224,22 +235,6 @@ public class FundInfo {
 		this.totalIncrease = totalIncrease;
 	}
 
-	public String getLastDayIncrease() {
-		return lastDayIncrease;
-	}
-
-	public void setLastDayIncrease(String lastDayIncrease) {
-		this.lastDayIncrease = lastDayIncrease;
-	}
-
-	public List<FundStockVo> getStockList() {
-		return stockList;
-	}
-
-	public void setStockList(List<FundStockVo> stockList) {
-		this.stockList = stockList;
-	}
-
 	public String getStockLastTime() {
 		return stockLastTime;
 	}
@@ -247,6 +242,5 @@ public class FundInfo {
 	public void setStockLastTime(String stockLastTime) {
 		this.stockLastTime = stockLastTime;
 	}
-	
-	
+
 }

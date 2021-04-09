@@ -15,9 +15,9 @@ import com.xifeng.util.io.FileUtil;
 
 public class FoundEastmoneyCrawler {
 	
-static WebDriver webDriver;
+	static WebDriver webDriver;
 	
-	static void init() {
+	public static void init() {
 		
 		String chromeDriverPath = "C:\\Users\\xiezb\\Downloads\\chromedriver_80.exe";
 		System.setProperty("webdriver.chrome.driver", chromeDriverPath);
@@ -25,10 +25,10 @@ static WebDriver webDriver;
 		webDriver = new ChromeDriver(chromeOptions);
 	}
 	
-	static void viewPage(String url,String id) {
+	public static FundInfo viewFundDetailPage(String url,String id) {
 		if(webDriver == null) {
 			System.out.println("webDriver need init first...");
-			return;
+			return null;
 		}
 		webDriver.get(url);
 		webDriver.manage().window().setSize(new Dimension(1170,840));
@@ -41,10 +41,16 @@ static WebDriver webDriver;
 		String html = webDriver.getPageSource();
 		String path = "F:\\xiezb\\svn\\temp\\"+id+".html";
 		FileUtil.writeFile(path, html);
+		FundInfo fundInfo = analysisToFundInfo(id);
+		System.out.println(JSON.toJSON(fundInfo));
+		return fundInfo;
+		
+	}
+	
+	public static FundInfo analysisToFundInfo(String id) {
 		FundInfo fundInfo = new FundInfo();
 		
 		fundInfo.setFundNo(id);
-		
 		WebElement dataItem02 = webDriver.findElement(By.xpath("//div[@class='dataOfFund']//dl[@class='dataItem02']"));
 		
 		fundInfo.setNetValueOfUnitTime(dataItem02.findElement(By.xpath("./dt[1]//p")).getText());
@@ -68,33 +74,42 @@ static WebDriver webDriver;
 		fundInfo.setOpenDate(infoOfFundTbody.findElement(By.xpath("./tr[2]//td[1]")).getText());
 		fundInfo.setManageCompany(infoOfFundTbody.findElement(By.xpath("./tr[2]//td[2]")).getText());
 		
-		List<FundStock> stockList = new ArrayList<>();
+		List<FundStockVo> stockList = new ArrayList<>();
 		
 		List<WebElement> trList = webDriver.findElement(By.xpath("//div[@class='poptableWrap']/table/tbody")).findElements(By.tagName("tr"));
+		if(trList.size() <= 2) {
+			return fundInfo;
+		}
+		
+		fundInfo.setStockLastTime(webDriver.findElement(By.xpath("//div[@class='poptableWrap_footer']/span[1]")).getText());
 		trList.remove(0);
 		for(WebElement tr:trList) {
-			FundStock stock = new FundStock();
+			FundStockVo stock = new FundStockVo();
 			stock.setStockName(tr.findElement(By.xpath("./td[1]")).getText());
 			stock.setPositionRatio(tr.findElement(By.xpath("./td[2]")).getText());
 			stock.setStockCode(tr.findElement(By.xpath("./td[3]")).getAttribute("stockcode"));
 			stock.setDailyRiseAndFall(tr.findElement(By.xpath("./td[3]")).getText());
 			stockList.add(stock);
 		}
-		
-		
 		fundInfo.setStockList(stockList);
-		System.out.println(JSON.toJSON(fundInfo));
 		
+		return fundInfo;
 	}
 	
+	public static void exit() {
+		webDriver.quit();
+	}
 	public static void main(String[] args) {
 		FoundEastmoneyCrawler.init();
-		String id = "161725";
-		String urlTemplate = "http://fund.eastmoney.com/%s.html";
-		String detailPageUrl = String.format(urlTemplate, id);
-		System.out.println(detailPageUrl);
-		FoundEastmoneyCrawler.viewPage(detailPageUrl,id);
+//		String id = "161725";
+//		String urlTemplate = "http://fund.eastmoney.com/%s.html";
+//		String detailPageUrl = String.format(urlTemplate, id);
+//		System.out.println(detailPageUrl);
+//		FoundEastmoneyCrawler.viewFundDetailPage(detailPageUrl,id);
 //		webDriver.quit();
+		
+		String url = "http://fund.eastmoney.com/Data/Fund_JJJZ_Data.aspx?t=1&lx=1&letter=&gsid=&text=&sort=zdf,desc&page=1,2000&dt=1617882714815&atfc=&onlySale=0";
+		url = "http://fund.eastmoney.com/Data/Fund_JJJZ_Data.aspx?t=1&lx=2&letter=&gsid=&text=&sort=zdf,desc&page=1,2000&dt=1617942568740&atfc=&onlySale=0";
 	}
 
 }
