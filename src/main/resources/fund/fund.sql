@@ -1,30 +1,30 @@
-#drop table if exists t_fund;
+drop table if exists t_fund;
 CREATE TABLE `t_fund` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `fund_no` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `name` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `fund_no` varchar(30) NOT NULL,
+  `name` varchar(100)  DEFAULT NULL,
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `type` tinyint(4) DEFAULT NULL COMMENT '基金类型：1股票型，2混合型，3债券型',
-  `mark` tinyint(4) DEFAULT '0' COMMENT '是否有执行过 0，未执行，1 已执行',
+  `type` tinyint DEFAULT NULL COMMENT '基金类型：1股票型，2混合型，3债券型',
+  `mark` tinyint DEFAULT '0' COMMENT '是否有执行过 0，未执行，1 已执行',
   PRIMARY KEY (`id`),
   UNIQUE KEY `fund_no` (`fund_no`)
-) ENGINE=InnoDB AUTO_INCREMENT=13445 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13445 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
-#drop table if exists t_fund_gp;
+drop table if exists t_fund_gp;
 CREATE TABLE `t_fund_gp` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `fund_no` varchar(30) unique COLLATE utf8_unicode_ci NOT NULL,
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `fund_no` varchar(30) unique NOT NULL,
   `name` varchar(100) DEFAULT NULL,
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ,
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-#drop table if exists t_fund_detail;
+drop table if exists t_fund_detail;
 CREATE TABLE `t_fund_detail` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `id` bigint NOT NULL AUTO_INCREMENT,
   `fund_no` varchar(30) COLLATE utf8_unicode_ci NOT NULL comment '基金编号',
   `total_money` varchar(60) DEFAULT NULL comment '基金规模:金额',
   `manager` varchar(60) DEFAULT NULL comment '基金管理人',
@@ -42,15 +42,16 @@ CREATE TABLE `t_fund_detail` (
   `last_year_increase` varchar(60) DEFAULT NULL comment '近1年涨幅',
   `three_year_increase` varchar(60) DEFAULT NULL comment '近3年涨幅',
   `total_increase` varchar(60) DEFAULT NULL comment '成立来涨幅',
+  `stock_last_time` varchar(60) DEFAULT NULL comment '持仓截止日期',
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ,
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-#drop table if exists t_fund_detail;
+drop table if exists t_fund_stock;
 CREATE TABLE `t_fund_stock` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `fund_no` varchar(30) COLLATE utf8_unicode_ci NOT NULL comment '基金编号',
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `fund_no` varchar(30)  NOT NULL comment '基金编号',
   `stock_code` varchar(60) DEFAULT NULL comment '股票代码',
   `stock_name` varchar(60) DEFAULT NULL comment '股票名称',
   `position_ratio` varchar(60) DEFAULT NULL comment '持仓比例',
@@ -58,4 +59,4 @@ CREATE TABLE `t_fund_stock` (
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ,
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
