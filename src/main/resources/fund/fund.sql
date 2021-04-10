@@ -45,6 +45,10 @@ CREATE TABLE `t_fund_detail` (
   `stock_last_time` varchar(60) DEFAULT NULL comment '持仓截止日期',
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ,
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `total_money_value` decimal(10,2) DEFAULT NULL,
+  `last_month_increase_value` decimal(10,2) DEFAULT NULL,
+  `three_month_increase_value` decimal(10,2) DEFAULT NULL,
+  `six_month_increase_value` decimal(10,2) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -58,5 +62,6 @@ CREATE TABLE `t_fund_stock` (
   `daily_rise_and_fall` varchar(60) DEFAULT NULL comment '当日涨跌幅',
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ,
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `position_ratio_value` decimal(10,2) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
