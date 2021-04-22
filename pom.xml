@@ -31,7 +31,7 @@
 		<com.alibaba.druid.version>0.2.6</com.alibaba.druid.version>
 		<fastjson.version>1.2.47</fastjson.version>
 
-		<mybatis.version>3.5.1</mybatis.version>
+		<mybatis.version>3.5.6</mybatis.version>
 		<mybatis-spring.version>2.0.1</mybatis-spring.version>
 
 		<dubbo.version>2.5.8</dubbo.version>
