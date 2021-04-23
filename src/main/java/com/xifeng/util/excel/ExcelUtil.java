@@ -9,9 +9,6 @@
 
 package com.xifeng.util.excel;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.sql.Connection;
@@ -24,6 +21,8 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.BorderStyle;
+import org.apache.poi.ss.usermodel.FillPatternType;
 
 import com.xifeng.util.db.MysqlConnection;
 import com.xifeng.util.db.Table;
@@ -48,21 +47,21 @@ public class ExcelUtil {
 		
 		HSSFCellStyle style = workbook.createCellStyle();
 		// 背景色
-		style.setFillForegroundColor(HSSFColor.YELLOW.index);
-		style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND); 
-		style.setFillBackgroundColor(HSSFColor.YELLOW.index); 
+		style.setFillForegroundColor(HSSFColor.HSSFColorPredefined.YELLOW.getIndex());
+		style.setFillPattern(FillPatternType.SOLID_FOREGROUND); 
+		style.setFillBackgroundColor(HSSFColor.HSSFColorPredefined.YELLOW.getIndex()); 
 		
 		HSSFFont font = workbook.createFont();
 		font.setFontHeightInPoints((short) 10);
 //		font.setColor(HSSFColor.RED.index);
-		font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+		font.setBold(true);
 		font.setFontName("宋体");
 		style.setFont(font);
 		// 设置边框
-		style.setBorderBottom(HSSFCellStyle.BORDER_THIN);
-		style.setBorderLeft(HSSFCellStyle.BORDER_THIN);
-		style.setBorderRight(HSSFCellStyle.BORDER_THIN);
-		style.setBorderTop(HSSFCellStyle.BORDER_THIN);  
+		style.setBorderBottom(BorderStyle.THIN);
+		style.setBorderLeft(BorderStyle.THIN);
+		style.setBorderRight(BorderStyle.THIN);
+		style.setBorderTop(BorderStyle.THIN);  
 		
 		int rowNum = 0;
 		for (Table table : tableList) {
