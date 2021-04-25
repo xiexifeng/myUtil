@@ -94,6 +94,8 @@ public class FundInfo {
 	
 	List<FundStockVo> stockList;
 	
+	boolean closed;
+	
 	
 
 	public String getFundNo() {
@@ -246,6 +248,14 @@ public class FundInfo {
 
 	public void setStockLastTime(String stockLastTime) {
 		this.stockLastTime = stockLastTime;
+	}
+
+	public boolean isClosed() {
+		return closed;
+	}
+
+	public void setClosed(boolean closed) {
+		this.closed = closed;
 	}
 	
 	

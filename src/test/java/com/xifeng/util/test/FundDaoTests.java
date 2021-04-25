@@ -2,6 +2,7 @@ package com.xifeng.util.test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 import javax.annotation.Resource;
 
@@ -13,6 +14,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.alibaba.fastjson.JSON;
 import com.xifeng.util.UitlApplication;
+import com.xifeng.util.craw.CrawlerThread;
 import com.xifeng.util.craw.FoundEastmoneyCrawler;
 import com.xifeng.util.craw.FundInfo;
 import com.xifeng.util.dao.FundDao;
@@ -97,8 +99,8 @@ public class FundDaoTests {
 		String fundNo = "161725";
 		String urlTemplate = "http://fund.eastmoney.com/%s.html";
 		String detailPageUrl = String.format(urlTemplate, fundNo);
-		FoundEastmoneyCrawler.init();
-		FundInfo fundInfo = FoundEastmoneyCrawler.viewFundDetailPage(detailPageUrl, fundNo);
+		FoundEastmoneyCrawler crawler = new FoundEastmoneyCrawler();
+		FundInfo fundInfo = crawler.viewFundDetailPage(detailPageUrl, fundNo);
 		if(fundInfo == null) {
 			return;
 		}
@@ -107,13 +109,14 @@ public class FundDaoTests {
 				fundCrawlerService.saveCrawlerData(fundInfo);
 			}
 		}.start();
-		FoundEastmoneyCrawler.exit();
+		crawler.exit();
 	}
 	
 	
 	@Test
 	public void testCrawlerBatch() {
-		FoundEastmoneyCrawler.init();
+		FoundEastmoneyCrawler crawler1 = new FoundEastmoneyCrawler();
+		FoundEastmoneyCrawler crawler2 = new FoundEastmoneyCrawler();
 		String urlTemplate = "http://fund.eastmoney.com/%s.html";
 		while(true) {
 			List<String> fundList = fundDao.queryUnmarkWithPage(0);
@@ -122,7 +125,7 @@ public class FundDaoTests {
 			}
 			for(String fundNo : fundList) {
 				String detailPageUrl = String.format(urlTemplate, fundNo);
-				FundInfo fundInfo = FoundEastmoneyCrawler.viewFundDetailPage(detailPageUrl, fundNo);
+				FundInfo fundInfo = crawler1.viewFundDetailPage(detailPageUrl, fundNo);
 				if(fundInfo == null) {
 					continue;
 				}
@@ -130,7 +133,57 @@ public class FundDaoTests {
 					
 			}
 		}
-		FoundEastmoneyCrawler.exit();
+		crawler1.exit();
+		crawler2.exit();
 		
 	}
+	
+	@Test
+	public void testCrawlerBatchWithThread() {
+		final CountDownLatch latch = new CountDownLatch(2);
+		FoundEastmoneyCrawler crawler1 = new FoundEastmoneyCrawler();
+		FoundEastmoneyCrawler crawler2 = new FoundEastmoneyCrawler();
+		CrawlerThread thread1 = new CrawlerThread(fundCrawlerService,crawler1,"thread-001",latch);
+		CrawlerThread thread2 = new CrawlerThread(fundCrawlerService,crawler2,"thread-002",latch);
+		thread1.start();
+		thread2.start();
+		while(true) {
+			synchronized (CrawlerThread.LOCK) {
+				if(CrawlerThread.fundList.isEmpty()) {
+					CrawlerThread.fundList = fundDao.queryUnmarkWithPage(0);
+				}
+				if(CollectionUtils.isEmpty(CrawlerThread.fundList)) {
+					CrawlerThread.finished = true;
+				}else {
+					try {
+						System.out.println(Thread.currentThread().getName() +" fundList is not empty will wait 30*1000ms");
+						CrawlerThread.LOCK.notifyAll();
+						CrawlerThread.LOCK.wait();
+						System.out.println(Thread.currentThread().getName() +" fundList is not empty after wait 30*1000ms");
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+				
+			}
+			
+			if(CrawlerThread.finished) {
+				break;
+			}
+			
+		}
+		try {
+			System.out.println(Thread.currentThread().getName() + " 等待2个子线程执行完毕...");
+			latch.await();
+			System.out.println(Thread.currentThread().getName() + " 2个子线程已经执行完毕");
+	        System.out.println(Thread.currentThread().getName() + " 继续执行主线程");
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		crawler1.exit();
+		crawler2.exit();
+		
+	}
+	
 }

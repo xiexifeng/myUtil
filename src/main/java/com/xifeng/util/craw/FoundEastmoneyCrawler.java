@@ -15,9 +15,13 @@ import com.xifeng.util.io.FileUtil;
 
 public class FoundEastmoneyCrawler {
 	
-	static WebDriver webDriver;
+	WebDriver webDriver;
 	
-	public static void init() {
+	public FoundEastmoneyCrawler() {
+		init();
+	}
+	
+	public void init() {
 		
 		String chromeDriverPath = "C:\\Users\\xiezb\\Downloads\\chromedriver_80.exe";
 		System.setProperty("webdriver.chrome.driver", chromeDriverPath);
@@ -25,7 +29,7 @@ public class FoundEastmoneyCrawler {
 		webDriver = new ChromeDriver(chromeOptions);
 	}
 	
-	public static FundInfo viewFundDetailPage(String url,String id) {
+	public FundInfo viewFundDetailPage(String url,String id) {
 		if(webDriver == null) {
 			System.out.println("webDriver need init first...");
 			return null;
@@ -47,10 +51,21 @@ public class FoundEastmoneyCrawler {
 		
 	}
 	
-	public static FundInfo analysisToFundInfo(String id) {
+	public FundInfo analysisToFundInfo(String id) {
 		FundInfo fundInfo = new FundInfo();
 		
 		fundInfo.setFundNo(id);
+		
+		try {
+			if(webDriver.findElement(By.xpath("//div[@class='dataOfFund']")) == null){
+				fundInfo.setClosed(true);
+				return fundInfo;
+			}
+		} catch (Exception e) {
+			fundInfo.setClosed(true);
+			return fundInfo;
+		}
+		
 		WebElement dataItem02 = webDriver.findElement(By.xpath("//div[@class='dataOfFund']//dl[@class='dataItem02']"));
 		
 		fundInfo.setNetValueOfUnitTime(dataItem02.findElement(By.xpath("./dt[1]//p")).getText());
@@ -96,11 +111,11 @@ public class FoundEastmoneyCrawler {
 		return fundInfo;
 	}
 	
-	public static void exit() {
+	public void exit() {
 		webDriver.quit();
 	}
 	public static void main(String[] args) {
-		FoundEastmoneyCrawler.init();
+//		FoundEastmoneyCrawler.init();
 //		String id = "161725";
 //		String urlTemplate = "http://fund.eastmoney.com/%s.html";
 //		String detailPageUrl = String.format(urlTemplate, id);

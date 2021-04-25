@@ -24,6 +24,9 @@ public interface FundDao {
 	@Update("update t_fund set mark=1 where fund_no=#{fundNo}")
 	void markExecuted(@Param("fundNo")String fundNo);
 	
+	@Update("update t_fund set type=2 where fund_no=#{fundNo}")
+	void markClosed(@Param("fundNo")String fundNo);
+	
 	@Insert({"INSERT INTO t_fund_detail (",
 		"fund_no,total_money,manager,manage_company,open_date,net_worth_estimation_time,",
 		"net_worth_estimation_value,net_value_of_unit_time,net_value_of_unit,",

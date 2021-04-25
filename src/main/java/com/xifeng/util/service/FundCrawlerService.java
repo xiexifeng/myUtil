@@ -24,10 +24,16 @@ public class FundCrawlerService {
 	
 	@Transactional
 	public void saveCrawlerData(FundInfo fundInfo) {
+		if(fundInfo.isClosed()) {
+			fundDao.markClosed(fundInfo.getFundNo());
+			System.out.println("markClosed fundInfo  " + fundInfo.getFundNo() + " success");
+			return;
+		}
 		FundDetail fundDetail = new FundDetail();
 		BeanUtils.copyProperties(fundInfo, fundDetail);
 		fundDao.saveFundDetail(fundDetail);
 		fundDao.markExecuted(fundInfo.getFundNo());
+		
 		System.out.println("save fundInfo  " + fundInfo.getFundNo() + " success");
 		List<FundStockVo> stockVoList = fundInfo.getStockList();
 		if(CollectionUtils.isEmpty(stockVoList)) {
