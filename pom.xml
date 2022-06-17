@@ -29,7 +29,7 @@
 		<spring-boot-starter-log4j.version>2.0.1.RELEASE</spring-boot-starter-log4j.version>
 
 		<com.alibaba.druid.version>0.2.6</com.alibaba.druid.version>
-		<fastjson.version>1.2.47</fastjson.version>
+		<fastjson.version>1.2.83</fastjson.version>
 
 		<mybatis.version>3.5.1</mybatis.version>
 		<mybatis-spring.version>2.0.1</mybatis-spring.version>
