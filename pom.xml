@@ -22,7 +22,7 @@
 
 		<poi.version>4.1.2</poi.version>
 		
-		<mysql.version>8.0.16</mysql.version>
+		<mysql.version>8.0.28</mysql.version>
 
 		<spring.version>[4.3.18,)</spring.version>
 		<boot.version>2.0.1.RELEASE</boot.version>
